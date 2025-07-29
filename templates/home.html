@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Vogona Fashion{% endblock %}
+
+{% block content %}
+<main>
+    <div class="px-30 pt-20 mb-5 relative">
+        <div class="h-60">
+            <img class=" h-full w-full object-cover" src="static/images/hero_section.jpg" alt="">
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <span class="font-bold text-4xl text-white">Hey I am demo banner just for design</span>
+        </div>
+    </div>
+
+    <div class="px-30 my-5 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-semibold px-4 py-1">Popular products</h1>
+        </div>
+        <div>
+            <a class="border-2 rounded px-4 py-2 text-xl hover:border-4" href="#"><span>See all</span></a>
+        </div>
+    </div>
+
+    <div class="px-20 my-5">
+        <ul class="grid grid-cols-5 px-10">
+            {% for product in products %}
+            <li class="m-5 p-2 shadow-2xl">
+                <a href="#">
+                    <div class="m-1">
+                        <img class="object-cover" src="{{product.images.url}}" alt="">
+                    </div>
+                    <h1 class="m-1 text-[18px] font-semibold">{{product.company_name}}</h1>
+                    <p class="m-1 h-10 text-sm text-gray-500">{{product.product_name}}</p>
+                    <p class="m-1 font-semibold">Rs.<span>{{product.price}}</span></p>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</main>
+
+{% endblock %}
