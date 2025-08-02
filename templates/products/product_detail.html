@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vogona Fashion{% endblock %}
+
+{% block content %}
+
+<main class="px-50 pt-30 pb-10">
+    <section class="flex justify-between bg-white">
+        <div class="p-10 w-1/2 border border-gray-200 flex justify-center">
+            <div>
+                <img class="object-cover" src="{{product.images.url}}" alt="">
+            </div>
+        </div>
+        <div class="p-10 w-1/2 border border-gray-200 flex flex-col justify-evenly">
+            <h1 class="text-2xl font-semibold">{{product.company_name}}</h1>
+            <h2 class="text-xl font-medium">{{product.product_name}}</h2>
+            <p class="font-normal text-gray-600">{{product.discription}}</p>
+            <p class="font-semibold">RS. <span>{{product.price}}</span></p>
+            {% if product.stock <= 0 %}
+            <h1 class="text-2xl text-red-800 font-semibold">Out of stock</h1>
+            {% else %}
+
+                {% comment %} {% if cart_item %}
+                <div class="flex justify-center text-xl font-semibold text-green-500">
+                    <h1><i class="fa-solid fa-circle-check"></i> Added to cart</h1>
+                </div>
+                <div class="py-1">
+                    <a href="#">
+                        <p
+                            class="flex justify-center items-center border-2 bg-gray-800 text-white p-2 rounded-lg hover:bg-gray-950">
+                            Proceed to Buy</p>
+                    </a>
+                </div>
+                <div class="py-1">
+                    <a href="{% url 'cart' %}">
+                        <p class="flex justify-center items-center border-2  p-2 rounded-lg hover:bg-black/20">
+                            Go to Cart</p>
+                    </a>
+                </div>
+                {% else %} {% endcomment %}
+                <form action="{% url 'add_item' product.id %}" method="POST" class="w-full flex flex-col gap-15">
+                    {% csrf_token %}
+                    <div class="w-full flex justify-evenly">
+                        <div>
+                            <select name="color" required class="outline-none cursor-pointer border-2 border-gray-400 hover:border-gray-600 rounded p-2 hover:bg-black/5">
+                                <option value="" disabled selected>Select Color</option>
+                                {% for i in product.variation_set.colors %}
+                                <option class="cursor-pointer" value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <select name="size" required class="outline-none cursor-pointer border-2 border-gray-400 hover:border-gray-600 rounded p-2 hover:bg-black/5">
+                                <option value="" disabled selected>Select Size</option>
+                                {% for i in product.variation_set.sizes %}
+                                <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full">
+                            <p class="flex justify-center items-center border-2  py-2 rounded-lg hover:bg-black/20">Add
+                                to Cart</p>
+                        </button>
+                    </div>
+                </form>
+                {% comment %} <div>
+                    <a href="#">
+                        <p
+                            class="flex justify-center items-center border-2 bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-950">
+                            Buy Now</p>
+                    </a>
+                </div>
+                {% endif %} {% endcomment %}
+
+                {% endif %}
+
+        </div>
+    </section>
+</main>
+
+
+
+{% endblock %}

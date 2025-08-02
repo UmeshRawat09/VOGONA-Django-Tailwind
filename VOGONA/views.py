@@ -1,10 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from product.models import Product
 
 
 def home(request):
-    products = Product.objects.all().filter(is_available=True)
+    products = Product.objects.filter(price__gt=1000)
     data = {
         'products' : products
     }

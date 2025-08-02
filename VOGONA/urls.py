@@ -19,11 +19,13 @@ from django.urls import path,include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from product import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-
+    path('all_products/', include('product.urls')),
+    path('cart/', include('cart.urls')),
 
 
     path("__reload__/", include("django_browser_reload.urls")),

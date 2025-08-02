@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Vogona Fashion All Products{% endblock %}
+
+{% block content %}
+
+<main class="py-20">
+    <div class="px-30 py-10 bg-white flex justify-between items-center">
+        {% if 'search in request.path' %}
+            <h2 class="text-2xl font-semibold">Result</h2>
+        {% else %}
+            <h2 class="text-2xl font-semibold">All Products</h2>
+        {% endif %}
+        <p class="text-xl">{{products_count}} Items found</p>
+    </div>
+    <section class="flex justify-between m-10 px-30 gap-20">
+        <aside>
+            <div class="bg-white px-10 pb-10 flex flex-col items-center rounded">
+                <h2 class="p-5 text-xl font-semibold">Categories</h2>
+                <ul class="h-80 overflow-auto">
+                    {% for category in list %}
+                        <a href="{{category.get_url}}">
+                            <li class="py-2 w-35 text-xs hover:text-sm shadow flex justify-center">{{category.category_name}}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+        {% if products %}
+        <div>
+            <ul class="grid grid-cols-3 gap-20">
+                {% for product in products %}
+                <li class="bg-white p-2 hover:shadow-2xl rounded">
+                    <a href="{{ product.get_url }}">
+                        <div class="m-1 flex justify-center items-center"><img class="object-cover"
+                                src="{{product.images.url}}" alt=""></div>
+                    </a>
+                    <a href="{{ product.get_url }}">
+                        <h2 class="m-1 text-[18px] font-semibold">{{product.company_name}}</h2>
+                    </a>
+                    <a href="{{ product.get_url }}">
+                        <p class="m-1 h-10 text-sm text-gray-500">{{product.product_name}}</p>
+                    </a>
+                    <p class="m-1 font-semibold">Rs. <span>{{product.price}}</span></p>
+                    <div class="py-1">
+                        <a href="{{ product.get_url }}">
+                            <p
+                                class="flex justify-center items-center border-2 bg-gray-800 text-white p-2 rounded-lg hover:bg-gray-950">
+                                View detail</p>
+                        </a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="w-2/3 mb-10 border border-gray-300 flex items-center justify-center bg-white"><span class="text-5xl font-semibold">Item not found</span></div>
+        {% endif %}
+    </section>
+
+    {% if products.has_other_pages %}
+        <div class="w-full">
+            <ul class="flex justify-center">
+                {% if products.has_previous %}
+                    <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{products.previous_page_number}}"><<</a></li>
+                {% else %}
+                    <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#"><<</a></li>
+                {% endif %}
+
+                {% for i in products.paginator.page_range %}
+                    {% if products.number == i %}
+                        <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">{{i}}</a></li>
+                    {% else %}
+                        <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if products.has_next %}
+                    <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{ products.next_page_number }}">>></a></li>
+                {% else %}
+                    <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">>></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</main>
+
+
+
+
+
+
+
+{% endblock %}
