@@ -10,7 +10,8 @@
             </div>
 
             <div class="flex items-center">
-                <form method="GET" action="{% url 'search' %}" role="search" class="flex items-center h-10 w-100 shadow-2xl">
+                <form method="GET" action="{% url 'search' %}" role="search"
+                    class="flex items-center h-10 w-100 shadow-2xl">
                     <input type="text" placeholder="Search" name="product_search"
                         class="w-full h-full border-2 border-gray-800 rounded-l px-2  outline-none">
                     <button type="submit"
@@ -23,11 +24,27 @@
                 <a class="border-2 px-4 py-3 rounded hover:border-4 hover:border-gray-800"
                     href="{% url 'all_products' %}">All Products</a>
             </div>
+            {% if user.id is None %}
+            <div class="flex items-center">
+                    <a class="text-xl hover:underline" href="{% url 'sign_up' %}">Sign up</a>/
+                    <a class="text-xl hover:underline" href="{% url 'login' %}">Login</a>
+            </div>
+            {% else %}
+            <div class="flex flex-col items-center">
+                <div class="flex flex-col">
+                    <p class="text-[18px] text-gray-950">Hello, <a href="{% url 'account' %}"><span class="hover:underline text-[14px] text-gray-700">{{user.first_name | capfirst}}</span></p></a>
+                    <a class="hover:underline text-[14px] text-gray-700" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+            {% endif %}
 
             <div>
-                <a href="{% url 'cart' %}"><div class="flex items-center h-10 text-2xl px-4 py-1 bg-gray-800 text-white rounded hover:border-2 hover:border-gray-800"><i class="fa-solid fa-cart-shopping "></i>
-                <span class="text-xl">{{cart_count}}</span>
-                </div>
+                <a href="{% url 'cart' %}">
+                    <div
+                        class="flex items-center h-10 text-2xl px-4 py-1 bg-gray-800 text-white rounded hover:border-2 hover:border-gray-800">
+                        <i class="fa-solid fa-cart-shopping "></i>
+                        <span class="text-xl">{{cart_count}}</span>
+                    </div>
                 </a>
             </div>
         </div>

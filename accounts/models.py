@@ -18,7 +18,7 @@ class MyAccountManager(BaseUserManager):
             last_name = last_name
         )
         user.set_password(password)
-        user.save(using = self.db)
+        user.save(using = self._db)
         return user
 
 
@@ -34,7 +34,7 @@ class MyAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_active = True
-        user.save(using = self.db)
+        user.save(using = self._db)
         return user
 
 
@@ -44,7 +44,7 @@ class Account(AbstractBaseUser):
     last_name           = models.CharField(max_length=100)
     username            = models.CharField(max_length=50, unique=True)
     email               = models.EmailField(max_length=100, unique=True)
-    phonenumber         = models.CharField( max_length=15)
+    phone_number         = models.CharField( max_length=15)
 
 
     date_joined         = models.DateTimeField(auto_now_add=True)
@@ -55,12 +55,13 @@ class Account(AbstractBaseUser):
     is_active           = models.BooleanField(default=False)
 
 
-    objects = MyAccountManager()
-
-
     USERNAME_FIELD      = 'email'
     REQUIRED_FIELDS     = ['username', 'first_name', 'last_name']
 
+    objects = MyAccountManager()
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
     def __str__(self):
         return self.email
