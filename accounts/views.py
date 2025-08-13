@@ -43,8 +43,7 @@ def sign_up(request):
             to_email = email
             send_email = EmailMessage(subject, message, to=[to_email])
             send_email.content_subtype = 'html'
-            send_email.send()
-            # messages.success(request, "Sign up successful")
+            send_email.send()           
             return redirect('/account/sign_up/?command=verification&email='+email)
 
     else:
