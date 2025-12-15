@@ -11,10 +11,14 @@
     <link rel="icon" href="static/images/vogona_logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=Aaeanfa1McMhkVQC050nYf07CQZT9mJNjAbjZCePzqNhP8tELXPwRF2xmLGW1z9LgU0RbkcQzRaASuB8&buyer-country=US&currency=USD&components=buttons&enable-funding=card&disable-funding=venmo,paylater"
+        data-sdk-integration-source="developer-studio"></script>
+
     {% tailwind_css %}
 </head>
 
-<body class="bg-white/90 min-h-screen font-serif text-gray-800">
+<body class="bg-white/90 min-h-screen font-sans text-gray-800 not-italic">
 
     <!-- navbar -->
     {% include "includes/header.html" %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Vogona Fashion Cart{% endblock %}
+
+
+{% block content %}
+
+<main class="py-20">
+    <div class="flex justify-center p-2 text-2xl font-bold">
+        <h2>Review Your Order and Make Payment</h2>
+    </div>
+    <div class="flex justify-center">
+        <section class="w-[45%] p-5">
+            <div class="flex flex-col bg-white border border-gray-300 rounded mb-1">
+                <h1 class="text-lg font-bold text-gray-900 px-5 py-2">Billing Address</h1>
+                <div class="py-2 border-t border-gray-300">
+                    <p class="text-sm text-gray-600 px-5">{{ order.name }}</p>
+                    <p class="text-sm text-gray-600 px-5">{{ order.address }}</p>
+                    <p class="text-sm text-gray-600 px-5">{{ order.city }}, {{ order.state }}</p>
+                    <p class="text-sm text-gray-600 px-5">{{ order.email }}</p>
+                    <p class="text-sm text-gray-600 px-5">{{ order.phone }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col bg-white py-5 border border-gray-300 rounded mb-1">
+                <h1 class="text-lg font-bold text-gray-900 px-5 pb-2">Payment Method</h1>
+                <p class="text-sm text-gray-600 px-5 pt-2 border-t border-gray-300">PayPal</p>
+            </div>
+            <div class="flex flex-col bg-white py-5 border border-gray-300 rounded mb-1">
+                <h1 class="text-lg font-bold text-gray-900 px-5 pb-2 border-gray-300">Review Products</h1>
+                {% for cart_item in cart_items %}
+
+                <div class="flex bg-white p-5 border-t border-gray-300">
+                    <div class="w-2/3 flex items-center gap-2">
+                        <div><img class="size-20 object-cover rounded" src="{{ cart_item.product.images.url }}" alt="">
+                        </div>
+                        <div>
+                            <h1 class="font-semibold"><a
+                                    href="{{cart_item.product.get_url}}">{{cart_item.product.company_name}}</a></h1>
+                            <p class="text-gray-600 text-sm"><a
+                                    href="{{cart_item.product.get_url}}">{{cart_item.product.product_name}}</a></p>
+                            <p class="text-gray-600 text-sm">
+                                {% if cart_item.variation.all %}
+                                {% for item in cart_item.variation.all %}
+                                <span>{{item.variation_category|capfirst}} :
+                                    {{item.variation_value|capfirst}}</span><br>
+                                {% endfor %}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="w-1/3 flex justify-between">
+                        <div class="w-1/2 flex">
+                            <p class="px-3 py-2">{{cart_item.quantity}}</p>
+                        </div>
+                        <div class="w-1/2 flex flex-col items-end">
+                            <p>Rs.<span>{{cart_item.sub_total}}</span></p>
+                            <p class="text-sm text-gray-600">Rs.<span>{{cart_item.product.price}}</span> each</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </section>
+
+        <aside class="w-[25%] p-5">
+            <div class="bg-white border border-gray-300 rounded p-2">
+                <div class="flex p-3">
+                    <p class="w-1/2 text-sm text-gray-600">Totle price:</p>
+                    <p class="w-1/2 flex justify-end text-sm text-gray-600">Rs.<span>{{total}}</span></p>
+                </div>
+                <div class="flex p-3">
+                    <p class="w-1/2 text-sm text-gray-600">Tax:</p>
+                    <p class="w-1/2 flex justify-end text-sm text-gray-600">Rs.<span>{{tax}}</span></p>
+                </div>
+                <div class="flex p-3">
+                    <p class="w-1/2 text-sm text-gray-600">Grand totle:</p>
+                    <p class="w-1/2 flex justify-end text-sm font-semibold">Rs.<span>{{grand_total}}</span></p>
+                </div>
+                <div class="flex justify-center gap-5 p-5">
+                    <img class="size-12" src="../../static/images/visa_card.png" alt="">
+                    <img class="size-12" src="../../static/images/mastercard.png" alt="">
+                    <img class="size-12" src="../../static/images/discover_card.png" alt="">
+                    <img class="size-12" src="../../static/images/amex_card.png" alt="">
+                </div>
+                <div class="p-2">
+                    <form action="{% url 'payments' %}" method="POST">
+                        {% csrf_token %}
+
+                        <div class="flex flex-col gap-2">
+                            <input type="hidden" name="order_number" value="{{ order.order_number }}">
+                            <div class="flex justify-center items-center">
+                                <button type="submit" name="payment_method" value="paypal"
+                                    class="bg-blue-500 py-2 px-6 rounded-lg text-white hover:bg-blue-600 font-bold w-full max-w-xs">
+                                    <p class="text-sm">Pay with <span class="text-lg">PayPal</span></p>
+                                </button>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <button type="submit" name="payment_method" value="card"
+                                    class="bg-black/85 py-2 px-15 rounded text-white hover:cursor-pointer hover:bg-black/90 font-bold">
+                                    <p class="text-base">Debit or CreditCard</p>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+
+
+{% endblock %}

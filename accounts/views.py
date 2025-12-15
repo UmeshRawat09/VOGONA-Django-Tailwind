@@ -3,7 +3,6 @@ from .forms import SignUpForm
 from .models import Account
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
