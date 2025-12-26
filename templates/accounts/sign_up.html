@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<main class="p-30 flex flex-col justify-center items-center h-screen">
+<main class="p-30 flex flex-col justify-center items-center h-screen flex-grow">
     {% if request.GET.command == 'verification' %}
     <p>Thank you for sign up  with us. We have sent you a verification email to your email id [{{request.GET.email}}]</p>
     <p>Go to your email address and verify your email.</p>

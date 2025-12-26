@@ -5,161 +5,153 @@
 
 {% block content %}
 
-<main class="px-50 pt-30 pb-10">
+<main class="py-20 px-40 flex-grow">
     {% include 'includes/message.html' %}
-    <section class="flex justify-between bg-white">
-        <div class="p-10 w-1/2 border border-gray-200 flex justify-center">
-            <div>
-                <img class="object-cover" src="{{product.images.url}}" alt="">
+    <section class="flex justify-between bg-gray-200 rounded-2xl mx-36">
+        <div class="py-5 px-2 w-1/2 border-r border-gray-400">
+            <div class="mainImage">
+                <center><img class="object-contain w-80 rounded-xl" src="{{product.images.url}}"></center>
             </div>
+            <ul class="product_images">
+                <li class="flex justify-center gap-1 w-full py-2 flex-wrap">
+                    <a href="{{ product.images.url }}" target="mainImage"><img
+                            class="object-center size-16 border border-gray-500 rounded" src="{{ product.images.url }}"
+                            alt="Product Image"></a>
+                    {% for i in product_gallery %}
+                    <a href="{{i.image.url}}" target="mainImage"><img
+                            class="object-center size-16 border border-gray-500 rounded" src="{{i.image.url}}"
+                            alt="Product Image"></a>
+                    {% endfor %}
+                </li>
+            </ul>
         </div>
-        <div class="p-10 w-1/2 border border-gray-200 flex flex-col justify-evenly">
-            <div class="flex justify-between items-center">
-                <h3 class="font-semibold text-2xl">{{product.company_name}}</h3>
-                <div class="rating-star font-medium text-sm">
-                    <span>
-                        <i class="fa fa-star{% if product.average_review < 0.5 %}-o{% elif product.average_review >= 0.5 and product.average_review < 1 %}-half-o {% endif %}"
-                            aria-hidden="true"></i>
-                        <i class="fa fa-star{% if product.average_review < 1.5 %}-o{% elif product.average_review >= 1.5 and product.average_review < 2 %}-half-o {% endif %}"
-                            aria-hidden="true"></i>
-                        <i class="fa fa-star{% if product.average_review < 2.5 %}-o{% elif product.average_review >= 2.5 and product.average_review < 3 %}-half-o {% endif %}"
-                            aria-hidden="true"></i>
-                        <i class="fa fa-star{% if product.average_review < 3.5 %}-o{% elif product.average_review >= 3.5 and product.average_review < 4 %}-half-o {% endif %}"
-                            aria-hidden="true"></i>
-                        <i class="fa fa-star{% if product.average_review < 4.5 %}-o{% elif product.average_review >= 4.5 and product.average_review < 5 %}-half-o {% endif %}"
-                            aria-hidden="true"></i>
-                        <span>{{product.count_review}} reviews</span>
-                    </span>
+        <div class="px-5 py-10 w-1/2 border-l border-gray-400 flex flex-col justify-center">
+            <div>
+                <div class="flex justify-between items-center my-5">
+                    <h3 class="font-bold text-2xl">{{product.company_name}}</h3>
+                    <div class="rating-star font-medium text-sm">
+                        <span>
+                            <i class="fa fa-star{% if product.average_review < 0.5 %}-o{% elif product.average_review >= 0.5 and product.average_review < 1 %}-half-o {% endif %}"
+                                aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.average_review < 1.5 %}-o{% elif product.average_review >= 1.5 and product.average_review < 2 %}-half-o {% endif %}"
+                                aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.average_review < 2.5 %}-o{% elif product.average_review >= 2.5 and product.average_review < 3 %}-half-o {% endif %}"
+                                aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.average_review < 3.5 %}-o{% elif product.average_review >= 3.5 and product.average_review < 4 %}-half-o {% endif %}"
+                                aria-hidden="true"></i>
+                            <i class="fa fa-star{% if product.average_review < 4.5 %}-o{% elif product.average_review >= 4.5 and product.average_review < 5 %}-half-o {% endif %}"
+                                aria-hidden="true"></i>
+                            <span>{{product.count_review}} reviews</span>
+                        </span>
+                    </div>
                 </div>
+                <h2 class="text-xl font-semibold my-5">{{product.product_name}}</h2>
             </div>
-            <h2 class="text-xl font-medium">{{product.product_name}}</h2>
-            <p class="font-normal text-gray-600">{{product.discription}}</p>
-            <p class="font-semibold">RS. <span>{{product.price}}</span></p>
-            {% if product.stock <= 0 %} <h1 class="text-2xl text-red-800 font-semibold">Out of stock</h1>
+            <div>
+                <p class="font-medium text-lg text-gray-500 my-5">{{product.discription}}</p>
+                <p class="font-semibold text-xl my-5">RS. <span>{{product.price}}</span></p>
+            </div>
+            {% if product.stock <= 0 %} <h1 class="text-2xl text-red-800 font-semibold my-5">Out of stock</h1>
                 {% else %}
-
-                {% comment %} {% if cart_item %}
-                <div class="flex justify-center text-xl font-semibold text-green-500">
-                    <h1><i class="fa-solid fa-circle-check"></i> Added to cart</h1>
-                </div>
-                <div class="py-1">
-                    <a href="#">
-                        <p
-                            class="flex justify-center items-center border-2 bg-gray-800 text-white p-2 rounded-lg hover:bg-gray-950">
-                            Proceed to Buy</p>
-                    </a>
-                </div>
-                <div class="py-1">
-                    <a href="{% url 'cart' %}">
-                        <p class="flex justify-center items-center border-2  p-2 rounded-lg hover:bg-black/20">
-                            Go to Cart</p>
-                    </a>
-                </div>
-                {% else %} {% endcomment %}
                 <form action="{% url 'add_item' product.id %}" method="POST" class="w-full flex flex-col gap-15">
                     {% csrf_token %}
-                    <div class="w-full flex justify-evenly">
-                        <div>
-                            <select name="color" required
-                                class="outline-none cursor-pointer border-2 border-gray-400 hover:border-gray-600 rounded p-2 hover:bg-black/5">
-                                <option value="" disabled selected>Select Color</option>
-                                {% for i in product.variation_set.colors %}
-                                <option class="cursor-pointer" value="{{ i.variation_value | lower }}">{{
-                                    i.variation_value | capfirst }}</option>
-                                {% endfor %}
-                            </select>
+                    <div class="text-center">
+                        <div class="w-full flex justify-evenly my-5">
+                            <div>
+                                <select name="color" required
+                                    class="outline-none cursor-pointer rounded p-2 border-2 border-gray-400 hover:border-gray-950 font-medium hover:bg-gray-300">
+                                    <option value="" disabled selected>Select Color</option>
+                                    {% for i in product.variation_set.colors %}
+                                    <option class="cursor-pointer" value="{{ i.variation_value | lower }}">
+                                        {{ i.variation_value | capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                <select name="size" required
+                                    class="outline-none cursor-pointer rounded p-2 border-2 border-gray-400 hover:border-gray-950 font-medium hover:bg-gray-300">
+                                    <option value="" disabled selected>Select Size</option>
+                                    {% for i in product.variation_set.sizes %}
+                                    <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <select name="size" required
-                                class="outline-none cursor-pointer border-2 border-gray-400 hover:border-gray-600 rounded p-2 hover:bg-black/5">
-                                <option value="" disabled selected>Select Size</option>
-                                {% for i in product.variation_set.sizes %}
-                                <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full">
-                            <p class="flex justify-center items-center border-2  py-2 rounded-lg hover:bg-black/20">Add
+                        <button type="submit" class="my-5 ">
+                            <p
+                                class="border-2 border-gray-400 px-25 py-2 rounded-lg hover:border-gray-950 hover:bg-gray-400">
+                                Add
                                 to Cart</p>
                         </button>
                     </div>
                 </form>
-                {% comment %} <div>
-                    <a href="#">
-                        <p
-                            class="flex justify-center items-center border-2 bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-950">
-                            Buy Now</p>
-                    </a>
-                </div>
-                {% endif %} {% endcomment %}
-
                 {% endif %}
 
         </div>
     </section>
-    <h5 class="font-bold text-2xl my-10">Write Yor Review</h5>
-    <div class="mx-25">
-        <div>
-            <form action="{% url 'product_review' product.id %}" method="POST">
-                {% csrf_token %}
-                <div>
-                    <!-- Rating stars -->
-                    <h6 class="font-semibold text-xl">How do you rate this product?</h6>
-                    <div class="rate">
-                        <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10"
-                            title="5"></label>
-                        <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9"
-                            title="4.5" class="half"></label>
-                        <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8"
-                            title="4"></label>
-                        <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7"
-                            title="3.5" class="half"></label>
-                        <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6"
-                            title="3"></label>
-                        <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5"
-                            title="2.5" class="half"></label>
-                        <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4"
-                            title="2"></label>
-                        <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3"
-                            title="1.5" class="half"></label>
-                        <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2"
-                            title="1"></label>
-                        <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1"
-                            title="0.5" class="half"></label>
+
+    <div class="m-10 bg-gray-100 rounded-2xl">
+        <h5 class="font-bold text-2xl bg-gray-200 rounded-t-2xl py-5 px-10">Write Your Review</h5>
+        <div class="mx-25 py-5">
+
+                <form action="{% url 'product_review' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <!-- Rating stars -->
+                        <h6 class="font-semibold text-xl">How do you rate this product?</h6>
+                        <div class="rate">
+                            <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10"
+                                title="5"></label>
+                            <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9"
+                                title="4.5" class="half"></label>
+                            <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8"
+                                title="4"></label>
+                            <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7"
+                                title="3.5" class="half"></label>
+                            <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6"
+                                title="3"></label>
+                            <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5"
+                                title="2.5" class="half"></label>
+                            <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4"
+                                title="2"></label>
+                            <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3"
+                                title="1.5" class="half"></label>
+                            <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2"
+                                title="1"></label>
+                            <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1"
+                                title="0.5" class="half"></label>
+                        </div>
+                        <br>
+                        <h6 class="font-semibold text-xl">Review Title:</h6>
+                        <input type="text" class="border-2 px-2 rounded w-full" name="subject">
+                        <br>
+                        <h6 class="font-semibold text-xl">Review:</h6>
+                        <textarea name="review" rows="4" class="border-2 rounded px-2 w-full"></textarea>
+                        <br>
+                        <div class="text-center my-10">
+                            {% if user.is_authenticated %}
+                            {% if order_product %}
+                            <button type="submit"
+                                class="bg-blue-500 py-2 px-6 rounded-lg text-white hover:bg-blue-600 font-bold">Submit
+                                Review</button>
+                            {% else %}
+                            <p class="text-lg font-medium">You must purchase this product to post a review.</p>
+                            {%endif %}
+                            {% else %}
+                            <p class="text-lg font-medium">You must be logged in to post a review. <span><a class="text-blue-500 border-b-2"
+                                        href="{% url 'login' %}">Login now</a></span></p>
+                            {% endif %}
+                        </div>
                     </div>
-                    <br>
-                    <h6 class="font-semibold text-xl">Review Title:</h6>
-                    <input type="text" class="border-2 rounded w-full" name="subject">
-                    <br>
-                    <h6 class="font-semibold text-xl">Review:</h6>
-                    <textarea name="review" rows="4" class="border-2 rounded w-full"></textarea>
-                    <br>
-                    <div class="text-center my-10">
-                        {% if user.is_authenticated %}
-                        {% if order_product %}
-                        <button type="submit"
-                            class="bg-blue-500 py-2 px-6 rounded-lg text-white hover:bg-blue-600 font-bold">Submit
-                            Review</button>
-                        {% else %}
-                        <p>You must purchase this product to post a review.</p>
-                        {%endif %}
-                        {% else %}
-                        <p>You must be logged in to post a review. <span><a class="text-blue-500 border-b-2"
-                                    href="{% url 'login' %}">Login now</a></span></p>
-                        {% endif %}
-                    </div>
-                </div>
-                {% include 'includes/message.html' %}
-            </form>
+                    {% include 'includes/message.html' %}
+                </form>
         </div>
     </div>
-
-    <div class="mx-5">
-        <div class="flex justify-between my-10">
-            <h3 class="font-bold text-2xl">Customer Reviews</h3>
+    <div class="m-10 bg-gray-100 rounded-2xl">
+        <div>
+        <div class="flex justify-between font-bold text-2xl bg-gray-200 rounded-t-2xl py-5 px-10">
+            <h3>Customer Reviews</h3>
             <div class="rating-star font-bold text-2xl">
                 <span>
                     <i class="fa fa-star{% if product.average_review < 0.5 %}-o{% elif product.average_review >= 0.5 and product.average_review < 1 %}-half-o {% endif %}"
@@ -176,9 +168,11 @@
                 </span>
             </div>
         </div>
+        {% if reviews %}
+        <div class="py-2">
         {% for review in reviews %}
-        <div class="text mx-20 my-5 p-5 border-2 border-gray-300 rounded">
-            <div class="flex justify-between">
+            <div class="mx-25 my-5 p-5 border-2 border-gray-300 rounded">
+                <div class="flex justify-between">
                 <h6 class="text-xl font-semibold">{{review.user.full_name}} </h6>
                 <span class="text-sm text-gray-500">{{review.updated_at}} </span>
             </div>
@@ -200,8 +194,13 @@
                 <p class="text-lg">{{review.subject}}</p>
                 <p class="text-lg">{{review.review}}</p>
             </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        {% else %}
+        <h5 class="text-center py-10 text-lg font-medium">This Product has 0 review.</h5>
+        {% endif %}
+    </div>
     </div>
 </main>
 

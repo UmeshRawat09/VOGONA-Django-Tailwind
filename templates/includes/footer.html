@@ -1,0 +1,29 @@
+<footer >
+	<div class="px-20 py-5 bg-gray-500 text-white">
+		<section class="flex justify-between items-center">
+			<div>
+				<p class="text-xl font-semibold"> &copy 2025 VOGONA </p>
+			</div>
+			<div class="font-semibold flex flex-col text-left">
+				<span>vogona2025@gmail.com</span>
+				<span>+879-332-9375</span>
+				<span>Street name 123, Avanue abc</span>
+			</div>
+			<div>
+				<i class="fab fa-2xl fa-cc-visa"></i>
+				<i class="fab fa-2xl fa-cc-paypal"></i>
+				<i class="fab fa-2xl fa-cc-mastercard"></i>
+			</div>
+		</section>
+	</div><!-- //container -->
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$('.product_images a').click(function(e){
+			e.preventDefault();
+			$('.mainImage img').attr('src', $(this).attr("href"));
+		})
+	})
+</script>

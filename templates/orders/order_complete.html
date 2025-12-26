@@ -6,100 +6,96 @@
 
 {% block content %}
 
-<div style="padding-top: 100px;">
-    <center><i class="fas fa-check-circle" style="font-size: 72px;margin-bottom: 20px;color: #28A745;"></i></center>
-    <h2 class="text-center">Payment Successful</h2>
-    <br>
-    <div class="text-center">
-        <a href="{% url 'all_products' %}" class="btn btn-success">Shop more</a>
+<div class="py-10 flex-grow">
+    <div class="py-10">
+        <center><i class="fas fa-check-circle" style="font-size:72px; margin-bottom:20px; color: #28A745;"></i></center>
+        <h2 class="text-center">Payment Successful</h2>
+        <br>
+        <div class="text-center">
+            <a href="{% url 'all_products' %}" class="btn btn-success">Shop more</a>
+        </div>
     </div>
-</div>
 
-<div class="shadow-2xl" style="margin:0 auto; width:50%; padding:50px; background:#f1f1f1; margin-top:50px;">
-    <div>
+    <div class="bg-gray-200 rounded-2xl" style="margin:0 auto; width:50%; padding:50px;">
+
         <div>
+            <div class="flex justify-between text-center">
+                <div>
+                    <img src="{% static 'images/VOGONA.png' %}" alt="Invoice logo" style="max-height: 50px;">
+                </div>
+                <div>
+                    <ul class="flex flex-col text-end" style="width: 250px;">
+                        <li><strong>Invoiced To</strong></li>
+                        <li class="text-sm font-medium">{{order.name}}</li>
+                        <li class="text-sm font-medium">{{order.address}}</li>
+                        <li class="text-sm font-medium">{{order.city}} {{order.state}}</li>
+                    </ul>
+                </div>
+            </div>
             <div>
                 <div>
                     <div>
-                        <div class="flex justify-between text-center">
-                            <div>
-                                <img src="{% static 'images/VOGONA.png' %}" alt="Invoice logo"
-                                    style="max-height: 50px;">
-                            </div>
-                            <div>
-                                <ul class="flex flex-col text-end" style="width: 250px;">
-                                    <li><strong>Invoiced To</strong></li>
-                                    <li class="text-sm">{{order.name}}</li>
-                                    <li class="text-sm">{{order.address}}</li>
-                                    <li class="text-sm" w-[10px]>{{order.city}} {{order.state}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div>
-                                    <ul  class="my-10">
-                                        <li><strong>Order:</strong> {{order.order_number}}</li>
-                                        <li><strong>Payment Method:</strong> {{payment_method}}</li>
-                                        <li><strong>Order Date:</strong> {{order.created_at}}</li>
-                                        <li><strong>Status:</strong> {{order.payment.status}}</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="my-10">
-                                <div class="w-full" style="overflow:hidden; outline:none;">
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center border border-gray-500 p-2">Products</th>
-                                                <th class="text-center border border-gray-500 p-2">Qty</th>
-                                                <th class="text-center border border-gray-500 p-2">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item in order_products %}
-                                            <tr>
-                                                <td class="text-start border border-gray-500 px-5 py-2">{{item.product.product_name}}
-                                                    <p>
-                                                        {% if item.variation.all %}
-                                                        {% for i in item.variation.all %}
-                                                        {{i.variation_category|capfirst}} : {{i.variation_value|capfirst}}<br>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </p>
-                                                </td>
-                                                <td class="text-center border border-gray-500 p-2">{{item.quantity}}</td>
-                                                <td class="text-center border border-gray-500 p-2">Rs. {{item.product_price}}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="2" class="text-right border border-gray-500 p-2">Sub Total:</th>
-                                                <th class="text-center border border-gray-500 p-2">Rs. {{sub_total}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2" class="text-right border border-gray-500 p-2">Tax:</th>
-                                                <th class="text-center border border-gray-500 p-2">Rs. {{order.tax}}</th>
-                                            </tr>
-
-                                            <tr>
-                                                <th colspan="2" class="text-right border border-gray-500 p-2">Grand Total:</th>
-                                                <th class="text-center border border-gray-500 p-2">Rs. {{order.order_total}}</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-center">Thank you for shopping with us!</p>
-                            </div>
-                        </div>
+                        <ul class="my-10">
+                            <li class="font-medium"><strong>Order:</strong> {{order.order_number}}</li>
+                            <li class="font-medium"><strong>Payment Method:</strong> {{payment_method}}</li>
+                            <li class="font-medium"><strong>Order Date:</strong> {{order.created_at}}</li>
+                            <li class="font-medium"><strong>Status:</strong> {{order.payment.status}}</li>
+                        </ul>
                     </div>
+                </div>
+
+                <div class="my-10">
+                    <div class="w-full" style="overflow:hidden; outline:none;">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th class="text-center font-bold border-2 border-gray-500 p-2">Products</th>
+                                    <th class="text-center font-bold border-2 border-gray-500 p-2">Qty</th>
+                                    <th class="text-center font-bold border-2 border-gray-500 p-2">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_products %}
+                                <tr>
+                                    <td class="text-start font-medium border-2 border-gray-500 px-5 py-2">
+                                        {{item.product.product_name}}
+                                        <p>
+                                            {% if item.variation.all %}
+                                            {% for i in item.variation.all %}
+                                            {{i.variation_category|capfirst}} : {{i.variation_value|capfirst}}<br>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td class="text-center border-2 border-gray-500 p-2 font-medium">{{item.quantity}}</td>
+                                    <td class="text-center border-2 border-gray-500 p-2 font-medium">Rs. {{item.product_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2" class="text-right border-2 border-gray-500 p-2">Sub Total:</th>
+                                    <th class="text-center border-2 border-gray-500 p-2">Rs. {{sub_total}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="text-right border-2 border-gray-500 p-2">Tax:</th>
+                                    <th class="text-center border-2 border-gray-500 p-2">Rs. {{order.tax}}</th>
+                                </tr>
+
+                                <tr>
+                                    <th colspan="2" class="text-right border-2 border-gray-500 p-2">Grand Total:</th>
+                                    <th class="text-center border-2 border-gray-500 p-2">Rs. {{order.order_total}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-center font-medium">Thank you for shopping with us!</p>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

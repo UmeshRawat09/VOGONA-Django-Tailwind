@@ -4,45 +4,47 @@
 
 {% block content %}
 
-<main class="py-20">
-    <div class="px-30 py-10 bg-white flex justify-between items-center">
+<main class="py-20 flex-grow">
+    <div class="mx-40 p-5 flex justify-between items-center bg-gray-300 rounded-t-2xl border-b-2 border-gray-500">
         {% if 'search in request.path' %}
-            <h2 class="text-2xl font-semibold">Result</h2>
+        <h2 class="text-2xl font-semibold">Result</h2>
         {% else %}
-            <h2 class="text-2xl font-semibold">All Products</h2>
+        <h2 class="text-2xl font-semibold">All Products</h2>
         {% endif %}
-        <p class="text-xl">{{products_count}} Items found</p>
+        <p class="text-xl font-medium">{{products_count}} Items found</p>
     </div>
-    <section class="flex justify-between m-10 px-30 gap-20">
+    <section class="flex justify-between gap-20 mx-40 bg-gray-200 p-10 rounded-b-2xl mb-10">
         <aside>
-            <div class="bg-white px-10 pb-10 flex flex-col items-center rounded">
-                <h2 class="p-5 text-xl font-semibold">Categories</h2>
-                <ul class="h-80 overflow-auto">
+            <div class="flex flex-col justify-between px-5">
+                <h2 class="py-2 px-10 text-xl font-semibold w-full text-center bg-gray-500 rounded">Categories</h2>
+                <ul>
                     {% for category in list %}
-                        <a href="{{category.get_url}}">
-                            <li class="py-2 w-35 text-xs hover:text-sm shadow flex justify-center">{{category.category_name}}</li>
-                        </a>
+                    <a href="{{category.get_url}}">
+                        <li
+                            class="py-1 px-8 mx-4 my-1 rounded text-base font-normal bg-gray-300 text-center hover:bg-gray-400 {% if request.path == category.get_url %} bg-gray-500 {% endif %}">
+                            {{category.category_name}}</li>
+                    </a>
                     {% endfor %}
                 </ul>
             </div>
         </aside>
         {% if products %}
         <div>
-            <ul class="grid grid-cols-3 gap-20">
+            <ul class="grid grid-cols-3 gap-10">
                 {% for product in products %}
-                <li class="bg-white p-2 hover:shadow-2xl rounded">
+                <li class="bg-white p-2 hover:shadow-2xl rounded flex flex-col justify-between">
                     <a href="{{ product.get_url }}">
-                        <div class="m-1 flex justify-center items-center"><img class="object-cover"
+                        <div class="m-1 flex justify-center items-center"><img class="object-contain size-60"
                                 src="{{product.images.url}}" alt=""></div>
                     </a>
                     <a href="{{ product.get_url }}">
-                        <h2 class="m-1 text-[18px] font-semibold">{{product.company_name}}</h2>
+                        <h2 class="text-lg font-semibold">{{product.company_name}}</h2>
                     </a>
                     <a href="{{ product.get_url }}">
-                        <p class="m-1 h-10 text-sm text-gray-500">{{product.product_name}}</p>
+                        <p class="text-sm font-medium text-gray-500">{{product.product_name}}</p>
                     </a>
-                    <p class="m-1 font-semibold">Rs. <span>{{product.price}}</span></p>
                     <div class="py-1">
+                        <p class="text-sm font-semibold">Rs. <span>{{product.price}}</span></p>
                         <a href="{{ product.get_url }}">
                             <p
                                 class="flex justify-center items-center border-2 bg-gray-800 text-white p-2 rounded-lg hover:bg-gray-950">
@@ -54,34 +56,41 @@
             </ul>
         </div>
         {% else %}
-        <div class="w-2/3 mb-10 border border-gray-300 flex items-center justify-center bg-white"><span class="text-5xl font-semibold">Item not found</span></div>
+        <div class="w-2/3 mb-10 border-2 border-gray-500 flex items-center justify-center bg-gray-300"><span
+                class="text-5xl font-semibold">Item not found</span></div>
         {% endif %}
     </section>
 
     {% if products.has_other_pages %}
-        <div class="w-full">
-            <ul class="flex justify-center">
-                {% if products.has_previous %}
-                    <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{products.previous_page_number}}"><<</a></li>
-                {% else %}
-                    <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#"><<</a></li>
-                {% endif %}
+    <div class="w-full">
+        <ul class="flex justify-center">
+            {% if products.has_previous %}
+            <li class="border-2 border-gray-500 bg-white hover:bg-gray-500 hover:border-gray-950 py-2"><a
+                    class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{products.previous_page_number}}"><<</a>
+            </li>
+            {% else %}
+            <li class="border-2 border-gray-500 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#"><<</a>
+            </li>
+            {% endif %}
 
-                {% for i in products.paginator.page_range %}
-                    {% if products.number == i %}
-                        <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">{{i}}</a></li>
-                    {% else %}
-                        <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{i}}">{{i}}</a></li>
-                    {% endif %}
-                {% endfor %}
+            {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+            <li class="border-2 border-gray-500 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">{{i}}</a></li>
+            {% else %}
+            <li class="border-2 border-gray-500 bg-white hover:bg-gray-500 hover:border-gray-950 py-2"><a
+                    class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{i}}">{{i}}</a></li>
+            {% endif %}
+            {% endfor %}
 
-                {% if products.has_next %}
-                    <li class="border border-gray-400 bg-white hover:border-2 hover:border-gray-500 py-2"><a class="text-blue-600 px-5 py-2 hover:text-blue-800" href="?page={{ products.next_page_number }}">>></a></li>
-                {% else %}
-                    <li class="border border-gray-400 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">>></a></li>
-                {% endif %}
-            </ul>
-        </div>
+            {% if products.has_next %}
+            <li class="border-2 border-gray-500 bg-white hover:bg-gray-500 hover:border-gray-950 py-2"><a
+                    class="text-blue-600 px-5 py-2 hover:text-blue-800"
+                    href="?page={{ products.next_page_number }}">>></a></li>
+            {% else %}
+            <li class="border-2 border-gray-500 bg-white py-2"><a class="px-5 py-2 cursor-default" href="#">>></a></li>
+            {% endif %}
+        </ul>
+    </div>
     {% endif %}
 </main>
 

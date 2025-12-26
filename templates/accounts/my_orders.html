@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<section class="py-30 flex-grow">
+	{% include 'includes/message.html' %}
+	<div>
+		<div class="flex justify-center gap-5 mx-50 items-start">
+			{% include 'includes/dashboard_sidebar.html' %}
+			<main class="border border-gray-300 shadow rounded w-2/3">
+				<article>
+					<header class="border-b border-gray-300 shadow px-4 py-2">
+						<strong class="d-inline-block mr-3">Your order history</strong>
+					</header>
+					<div class="flex justify-center">
+						<table class="w-full border-collapse">
+							<thead class="bg-gray-300">
+								<tr>
+									<th class="px-4 py-2 text-left">Order #</th>
+									<th class="px-4 py-2 text-left">Billing Name</th>
+									<th class="px-4 py-2 text-left">Phone</th>
+									<th class="px-4 py-2 text-left">Order Total</th>
+									<th class="px-4 py-2 text-left">Date</th>
+								</tr>
+							</thead>
+							<tbody class="w-full">
+								{% for order in orders %}
+								<tr class="border-b-2 border-gray-300">
+									<td class="px-4 py-2">
+										<a href="{% url 'order_detail' order.order_number %}" class="text-blue-600 hover:underline font-medium">{{order.order_number}}</a>
+									</td>
+									<td class="px-4 py-2 text-sm font-medium">{{order.name}}</td>
+									<td class="px-4 py-2 text-sm font-medium">{{order.phone}}</td>
+									<td class="px-4 py-2 text-sm font-medium">${{order.order_total}}</td>
+									<td class="px-4 py-2 text-sm font-medium">{{order.created_at}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</article> <!-- order-group.// -->
+			</main>
+		</div> <!-- row.// -->
+	</div>
+
+
+</section>
+
+{% endblock %}
